@@ -6,7 +6,6 @@ const jwt = require('jsonwebtoken');
 // Register new user
 exports.register = async (req, res) => {
     const { name, email, phone, address, password } = req.body;
-    console.log("🚀 ~ exports.register= ~ name, email, phone, address:", name, email, phone, address)
   
     try {
       // Check if user already exists
@@ -31,7 +30,7 @@ exports.register = async (req, res) => {
       await user.save();
   
       // Generate JWT token
-      const payload = { userId: user?.email };
+      const payload = { email: user?.email };
       const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '365d' });
   
       res.status(201).json({ token });
@@ -44,7 +43,6 @@ exports.register = async (req, res) => {
 // User login
 exports.login = async (req, res) => {
     const { email, password } = req.body;
-    console.log("🚀 ~ exports.login= ~ email, password:", email, password)
     try {
         // Find user by email
         const user = await User.findOne({ email });
@@ -54,14 +52,13 @@ exports.login = async (req, res) => {
 
         // Check if password is correct
         const isMatch = await bcrypt.compare(password, user.password);
-        console.log("🚀 ~ exports.login= ~ isMatch:", isMatch)
         if (!isMatch) {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
         // Generate JWT token
-        const payload = { userId: user.id };
-        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const payload = { email: user.email };
+        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '365d' });
 
         // Send response
         res.json({ token });
