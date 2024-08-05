@@ -5,8 +5,8 @@ const jwt = require('jsonwebtoken');
 
 // Register new user
 exports.register = async (req, res) => {
-    const { name, email, phone, photoUrl, password } = req.body;
-    console.log("🚀 ~ exports.register= ~ name, email, phone, photoUrl:", name, email, phone, photoUrl)
+    const { name, email, phone, address, password } = req.body;
+    console.log("🚀 ~ exports.register= ~ name, email, phone, address:", name, email, phone, address)
   
     try {
       // Check if user already exists
@@ -25,13 +25,13 @@ exports.register = async (req, res) => {
         email,
         phone,
         password: hashedPassword,
-        photoUrl: photoUrl || 'https://i.pravatar.cc/150?u=a042581f4e29026024d',
+        address: address || '',
       });
   
       await user.save();
   
       // Generate JWT token
-      const payload = { userId: user._id };
+      const payload = { userId: user?.email };
       const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '365d' });
   
       res.status(201).json({ token });

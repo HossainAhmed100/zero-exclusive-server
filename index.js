@@ -1,6 +1,5 @@
 // Import necessary modules
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
@@ -22,14 +21,18 @@ connectDB();
 // Import routes
 const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
+const ordersRoutes = require('./routes/ordersRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 // Use routes
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/orders', ordersRoutes);
+app.use('/api/users', userRoutes);
 
 // Test route
 app.get("/", (req, res) => {
-    res.send("Smart Fashion Server is Running");
+    res.send("Zero Exclusive Server is Running");
 });
 
 // Start the server
