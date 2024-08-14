@@ -23,12 +23,14 @@ const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
 const ordersRoutes = require('./routes/ordersRoutes');
 const userRoutes = require('./routes/userRoutes');
+const myCartRoutes = require('./routes/myCartRoutes');
 
 // Use routes
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', ordersRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/myCart', myCartRoutes);
 
 // Test route
 app.get("/", (req, res) => {

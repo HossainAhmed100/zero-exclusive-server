@@ -3,7 +3,6 @@ const User = require('../models/User');
 // Get user by email
 exports.getUserByEmail = async (req, res) => {
     const { email } = req.params;
-    console.log("🚀 ~ exports.getUserByEmail= ~ email:", email)
     try {
         const user = await User.findOne({ email });
         if (!user) {

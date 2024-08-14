@@ -50,21 +50,36 @@ exports.deleteProduct = async (req, res) => {
 
 // Update product by category
 exports.updateProduct = async (req, res) => {
-    const id = req.params.id;
+    const { title, brand, category, price, discount,  discountType, sku, quantity, description, rating, thumbnail, morePhotos} = req.body;
+    const { productId } = req.params;
+
     try {
-        const updatedProduct = await products.updateMany(
-            { category: id },
-            { $set: { thumbnail: "https://i.ibb.co/3s7hJKD/laptop.png" } }
-        );
-        if (!updatedProduct) {
-            return res.status(404).json({ message: 'Product not found' });
+        const product = await products.findById(productId);
+        if (!product) {
+            return res.status(404).json({ message: 'User not found' });
         }
-        res.json(updatedProduct);
-    } catch (error) {
-        console.error('Error updating product:', error);
-        res.status(500).json({ message: 'Internal server error' });
+
+        product.title = title || product.title;
+        product.brand = brand || product.brand;
+        product.category = category || product.category;
+        product.price = price || product.price;
+        product.discount = discount || product.discount;
+        product.discountType = discountType || product.discountType;
+        product.sku = sku || product.sku;
+        product.quantity = quantity || product.quantity;
+        product.description = description || product.description;
+        product.rating = rating || product.rating;
+        product.thumbnail = thumbnail || product.thumbnail;
+        product.morePhotos = morePhotos || product.morePhotos;
+
+        await product.save();
+        res.json(product);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error' });
     }
 };
+
 
 // Create new product
 exports.createProduct = async (req, res) => {

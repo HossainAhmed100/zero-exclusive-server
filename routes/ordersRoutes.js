@@ -1,13 +1,15 @@
 // Import Express and controller functions
 const express = require('express');
-const { register, login } = require('../controllers/authController');
+const { createNewOrder, getAllMyOrders, getAllOrders } = require('../controllers/ordersControler');
+const { verifyToken, verifyAdmin } = require('../middleware/auth');
 
 // Create a router
 const router = express.Router();
 
 // Define routes
-router.post('/register', register);
-router.post('/login', login);
+router.get('/:email', verifyToken, getAllMyOrders);
+router.get('/getallOrder', verifyAdmin, getAllOrders);
+router.post('/', createNewOrder);
 
 // Export router
 module.exports = router;
